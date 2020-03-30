@@ -3,7 +3,7 @@
 
     <groupId>com.github.eirslett</groupId>
     <artifactId>frontend-plugins</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.1-failsafe</version>
     <packaging>pom</packaging>
 
     <properties>
