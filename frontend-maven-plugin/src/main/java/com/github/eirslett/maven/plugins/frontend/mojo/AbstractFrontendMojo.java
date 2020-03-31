@@ -16,9 +16,10 @@ import com.github.eirslett.maven.plugins.frontend.lib.FrontendException;
 import com.github.eirslett.maven.plugins.frontend.lib.FrontendPluginFactory;
 import com.github.eirslett.maven.plugins.frontend.lib.TaskRunnerException;
 
+import static com.github.eirslett.maven.plugins.frontend.mojo.VerifyMojo.INTEGRATION_TEST_FAILED_KEY;
+
 public abstract class AbstractFrontendMojo extends AbstractMojo {
 
-    public static final String INTEGRATION_TEST_FAILED_KEY = "integrationTestFailed";
     @Component
     protected MojoExecution execution;
 
@@ -57,6 +58,9 @@ public abstract class AbstractFrontendMojo extends AbstractMojo {
     @Parameter(property = "installDirectory", required = false)
     protected File installDirectory;
 
+    @Parameter(defaultValue = "${basedir}/pom.xml")
+    protected File pom;
+
     /**
      * Additional environment variables to pass to the build.
      */
@@ -89,12 +93,7 @@ public abstract class AbstractFrontendMojo extends AbstractMojo {
         return "integration-test".equals(phase);
     }
 
-    private boolean isVerifyPhase(){
-        String phase = execution.getLifecyclePhase();
-        return "verify".equals(phase);
-    }
-
-    protected abstract void execute(FrontendPluginFactory factory) throws FrontendException;
+    protected abstract void execute(FrontendPluginFactory factory) throws FrontendException, MojoFailureException;
 
     /**
      * Implemented by children to determine if this execution should be skipped.
@@ -103,9 +102,6 @@ public abstract class AbstractFrontendMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoFailureException {
-        if(isVerifyPhase() && integrationTestsHaveFailed()){
-            throw new MojoFailureException("Some integration tests have failed during integration-test phase.");
-        }
         if (testFailureIgnore && !isTestingPhase()) {
             getLog().info("testFailureIgnore property is ignored in non test phases");
         }
@@ -133,11 +129,6 @@ public abstract class AbstractFrontendMojo extends AbstractMojo {
         }
     }
 
-    private Boolean integrationTestsHaveFailed() {
-        Object failed = getPluginContext().get(INTEGRATION_TEST_FAILED_KEY);
-        return failed != null && (Boolean) failed;
-    }
-
     private void storeIntegrationTestFailed() {
         Map<String, Object> pluginContext;
         if(getPluginContext() != null){
@@ -148,5 +139,4 @@ public abstract class AbstractFrontendMojo extends AbstractMojo {
         pluginContext.put(INTEGRATION_TEST_FAILED_KEY, true);
         setPluginContext(pluginContext);
     }
-
 }
