@@ -3,11 +3,12 @@
     <parent>
         <artifactId>frontend-plugins</artifactId>
         <groupId>io.github.alexandertang</groupId>
-        <version>1.9.1-failsafe</version>
+        <version>1.9.2-failsafe-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>frontend-plugin-core</artifactId>
+  <version>1.9.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencies>

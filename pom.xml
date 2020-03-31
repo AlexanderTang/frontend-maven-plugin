@@ -3,7 +3,7 @@
 
     <groupId>io.github.alexandertang</groupId>
     <artifactId>frontend-plugins</artifactId>
-    <version>1.9.1-failsafe</version>
+    <version>1.9.2-failsafe-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
